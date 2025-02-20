@@ -1,0 +1,20 @@
+﻿@model UsersIndexViewModel
+
+<div>
+    <h1>Search for users</h1>
+
+    <form action="/Users" method="get">
+        <input type="text" name="Search" placeholder="Search" value="@Model.Search"/>    
+        <input type="submit" value="Search" />
+    </form>
+
+    <hr/>
+
+    <h2>Results</h2>
+
+    @foreach (var user in Model.Result)
+    {
+        <p>@user.Name</p>
+    }
+
+</div>
