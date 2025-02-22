@@ -14,7 +14,9 @@
 
     @foreach (var user in Model.Result)
     {
-        <p>@user.Name</p>
+        <p>
+            <a href="/Users/@user.Id">@user.Name</a>
+        </p>
     }
 
 </div>
