@@ -49,10 +49,10 @@ namespace BroadcastSocialMedia.Controllers
         public async Task<IActionResult> ListenToUser(UsersListenToUserViewModel viewModel)
         {
             var loggedInUser = await _userManager.GetUserAsync(User);
-            var userTolIstenTo = await _dbContext.Users.Where(u => u.Id == viewModel.UserId)
+            var userToListenTo = await _dbContext.Users.Where(u => u.Id == viewModel.UserId)
                 .FirstOrDefaultAsync();
 
-            loggedInUser.ListeningTo.Add(userTolIstenTo);
+            loggedInUser.ListeningTo.Add(userToListenTo);
 
             await _userManager.UpdateAsync(loggedInUser);
             await _dbContext.SaveChangesAsync();
