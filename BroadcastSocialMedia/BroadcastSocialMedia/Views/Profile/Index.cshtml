@@ -1,10 +1,21 @@
 ﻿@model ProfileIndexViewModel
 
-<div>
+<div class="viewsContainer">
     <h1>Update profile</h1>
 
-    <form method="post" action="/Profile/Update">
-        <input value="@Model.Name" name="Name" placeholder="Name"/>
-        <input type="submit" value="Save" />
+    <form method="post" action="/Profile/Update" enctype="multipart/form-data">
+        <input value="@Model.Name" name="Name" placeholder="Name" />
+        <input type="file" name="ProfileImageFile">
+        <input type="submit" value="Save">
     </form>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <p style="color: red">@Model.ErrorMessage</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ImageFilename))
+    {
+        <img src="~/images/profilePictures/@Model.ImageFilename" alt="Profile Image">
+    }
 </div>

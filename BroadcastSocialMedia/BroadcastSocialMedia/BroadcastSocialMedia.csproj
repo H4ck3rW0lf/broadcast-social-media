@@ -15,4 +15,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\broadcastImages\" />
+    <Folder Include="wwwroot\images\profileImages\" />
+  </ItemGroup>
+
 </Project>

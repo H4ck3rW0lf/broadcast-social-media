@@ -1,0 +1,35 @@
+﻿@model FeaturedIndexViewModel
+
+@{
+    ViewData["Title"] = "Featured Broadcasts";
+}
+
+<div class="viewsContainer">
+    @if (Model != null)
+    {
+        <h2>Featured broadcasts</h2>
+        @for (int i = 0; i < 5 && i < Model.SortedBroadcasts.Count; i++)
+        {
+            <div class="broadcast">
+                <p>
+                    <b>
+                        <img class="profilePictureSmall" src="~/images/profilePictures/@Model.SortedBroadcasts[i].User.ProfileImageFilename" alt="Your Profile Image">
+                        @Model.SortedBroadcasts[i].User.Name
+                        (@Model.SortedBroadcasts[i].Published.ToShortDateString() @Model.SortedBroadcasts[i].Published.ToShortTimeString())
+                    </b>:
+                </p>
+                <p>@Model.SortedBroadcasts[i].Message</p>
+
+                @if (!string.IsNullOrEmpty(Model.SortedBroadcasts[i].ImageFilename))
+                {
+                    <img style="height:100px" src="~/images/broadcastImages/@Model.SortedBroadcasts[i].ImageFilename" alt="Your Image">
+                }
+
+                @if (Model.SortedBroadcasts[i].UserThatLikeBroadcasts.Count != 0)
+                {
+                    <p>@Model.SortedBroadcasts[i].UserThatLikeBroadcasts.Count gillar detta</p>
+                }
+            </div>
+        }
+    }
+</div>

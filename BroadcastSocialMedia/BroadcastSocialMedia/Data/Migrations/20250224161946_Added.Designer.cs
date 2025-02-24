@@ -4,6 +4,7 @@ using BroadcastSocialMedia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BroadcastSocialMedia.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250224161946_Added")]
+    partial class Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,32 +128,6 @@ namespace BroadcastSocialMedia.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Broadcasts");
-                });
-
-            modelBuilder.Entity("BroadcastSocialMedia.Models.UserThatLikeBroadcast", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BroadcastId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NameOfUserThatLike")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BroadcastId");
-
-                    b.ToTable("UserThatLikeBroadcast");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -306,15 +283,6 @@ namespace BroadcastSocialMedia.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BroadcastSocialMedia.Models.UserThatLikeBroadcast", b =>
-                {
-                    b.HasOne("BroadcastSocialMedia.Models.Broadcast", null)
-                        .WithMany("UserThatLikeBroadcasts")
-                        .HasForeignKey("BroadcastId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -371,11 +339,6 @@ namespace BroadcastSocialMedia.Data.Migrations
                     b.Navigation("Broadcasts");
 
                     b.Navigation("ListeningTo");
-                });
-
-            modelBuilder.Entity("BroadcastSocialMedia.Models.Broadcast", b =>
-                {
-                    b.Navigation("UserThatLikeBroadcasts");
                 });
 #pragma warning restore 612, 618
         }

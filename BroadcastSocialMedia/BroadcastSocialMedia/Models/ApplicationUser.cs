@@ -8,5 +8,6 @@ namespace BroadcastSocialMedia.Models
         public ICollection<Broadcast> Broadcasts { get; set; }
 
         public ICollection<ApplicationUser> ListeningTo { get; set; } = new List<ApplicationUser>();
+        public string ?ProfileImageFilename { get; set; }
     }
 }
