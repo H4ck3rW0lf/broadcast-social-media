@@ -31,7 +31,6 @@ namespace BroadcastSocialMedia.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                // Istället för att returnera Unauthorized(), visa en vy med ett meddelande.
                 return View("Index", new HomeIndexViewModel
                 {
                     Broadcasts = new List<Broadcast>(),

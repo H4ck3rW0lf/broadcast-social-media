@@ -18,4 +18,12 @@
     {
         <img src="~/images/profilePictures/@Model.ImageFilename" alt="Profile Image">
     }
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
 </div>

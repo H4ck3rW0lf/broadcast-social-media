@@ -51,7 +51,7 @@ namespace BroadcastSocialMedia.Controllers
                     ErrorMessage = "This name is already in use! Choose a different username."
                 };
 
-                return View("Index", profileImageViewModel);
+                return View(profileImageViewModel);
             }
 
             // Om en ny profilbild har laddats upp
@@ -65,13 +65,15 @@ namespace BroadcastSocialMedia.Controllers
 
             await _userManager.UpdateAsync(user);
 
+            TempData["Message"] = "Your name is saved!";
+
             return Redirect("/");
         }
 
         private string SaveImageFile(IFormFile imageFile) // Uppgift 2
         {
             string projectDirectory = Directory.GetCurrentDirectory();
-            string relativePath = "wwwroot\\imagesprofilePictures";
+            string relativePath = "wwwroot/images/profilePictures";
             string fullPath = Path.Combine(projectDirectory, relativePath);
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
             string fullPathAndImageFileName = Path.Combine(fullPath, fileName);
