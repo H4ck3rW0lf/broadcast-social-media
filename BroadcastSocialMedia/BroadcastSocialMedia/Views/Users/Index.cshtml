@@ -20,9 +20,9 @@
         <ul>
             @foreach (var user in Model.Result)
             {
-                <li class="profileContainer">
+                <li class="userItem">
                     <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
-                    <b>@user.Name</b>
+                    <span class="userName">@user.Name</span>
                     <form method="post" action="/Users/ListenToUser">
                         <input type="hidden" name="UserId" value="@user.Id">
                         <button class="followButton" type="submit">Follow</button>
@@ -38,12 +38,12 @@
 
     @if (Model.FollowingUsers.Any())
     {
-        <ul>
+        <ul class="followedUsersList">
             @foreach (var user in Model.FollowingUsers)
             {
-                <li class="profileContainer">
+                <li class="userItem">
                     <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
-                    <b>@user.Name</b>
+                    <span class="userName">@user.Name</span>
                     <form method="post" action="/Users/StopListenToUser">
                         <input type="hidden" name="UserId" value="@user.Id">
                         <button class="unfollowButton" type="submit">Unfollow</button>

@@ -6,15 +6,16 @@
     @foreach (var broadcast in Model.SortedBroadcasts)
     {
         <div class="broadcast">
-            <div class="profileContainer">
+            <div class="userProfileBox">
                 <img class="profileImageMedium" src="~/images/profilePictures/@broadcast.User.ProfileImageFilename" onclick="enlargeImage(this)" alt="Profile Image">
-                <b>@broadcast.User.Name</b>
+                <span class="userName">@broadcast.User.Name</span>
             </div>
-            <p>@broadcast.Message</p>
+
+            <p class="postContent">@broadcast.Message</p>
 
             @if (!string.IsNullOrEmpty(broadcast.ImageFilename))
             {
-                <img class="broadcastImageFull" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">
+                <img class="broadcastImageFrame" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">
             }
 
             <p>@broadcast.UserThatLikeBroadcasts.Count Likes</p>

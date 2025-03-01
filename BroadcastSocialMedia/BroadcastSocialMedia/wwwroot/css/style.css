@@ -6,48 +6,94 @@ body {
     padding: 0;
 }
 
-/* Kontener widoków */
-.viewsContainer {
-    width: 80%;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+/* Kontenery */
+.viewsContainer, .createPostContainer, .searchResultContainer, .followedUsersList {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-/* Ramka dla zdjęcia profilowego i nazwy użytkownika */
-.userProfileBox {
+/* Nagłówki sekcji */
+.profileHeader, .searchUserItem, .userProfileBox, .userItem {
     display: flex;
     align-items: center;
-    padding: 10px;
+    gap: 15px;
+    margin-bottom: 30px;
     background: #e9ecef;
+    padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    margin-bottom: 10px;
 }
 
-/* Zdjęcie profilowe */
-.profileImageMedium {
-    width: 70px;
-    height: 70px;
+    /* Zdjęcia profilowe */
+    .profileImageMedium, .searchUserItem img, .userItem img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+    }
+
+.profileImageLarge {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin-right: 10px;
+    cursor: pointer;
 }
 
-/* Nazwa użytkownika */
-.userName {
+/* Czcionki */
+.userName, .searchUserItem .userName, .userItem .userName {
     font-size: 18px;
     font-weight: bold;
+    margin-left: 10px;
+    margin-right: auto;
 }
 
-/* Odstęp między ramką użytkownika a treścią posta */
-.postContent {
-    margin-top: 10px;
+/* Przyciski */
+button, .saveButton, .likeButton, .followButton, .unfollowButton {
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: white;
 }
 
-/* Przycisk Like - zielony */
-.likeButton {
+.saveButton, .likeButton {
+    background-color: #28a745;
+}
+
+    .saveButton:hover, .likeButton:hover {
+        background-color: #218838;
+    }
+
+.followButton {
+    background-color: #007bff;
+}
+
+    .followButton:hover {
+        background-color: #0056b3;
+    }
+
+.unfollowButton {
+    background-color: #dc3545;
+}
+
+    .unfollowButton:hover {
+        background-color: #c82333;
+    }
+
+/* Pola tekstowe */
+.textAreaFullWidth, .nameInput {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+/* Przycisk Save - zielony */
+.saveButton {
     background-color: #28a745;
     color: white;
     border: none;
@@ -56,97 +102,50 @@ body {
     border-radius: 5px;
 }
 
-    .likeButton:hover {
+.saveButton:hover {
         background-color: #218838;
-    }
-
-/* Przycisk Follow / Unfollow */
-.followButton, .unfollowButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: auto;
 }
 
-.unfollowButton {
-    background-color: #dc3545;
-}
-
-.followButton:hover {
-    background-color: #0056b3;
-}
-
-.unfollowButton:hover {
-    background-color: #c82333;
-}
-
-/* Podwójna linia oddzielająca sekcje */
-.separator-double {
-    border-top: 3px double #ddd;
-    margin: 20px 0;
-}
-
-/* Wyszukiwanie użytkowników */
-.userSearchContainer {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Usuń kropki z list w Recommended Users i Search Users */
+/* Lista użytkowników - stylizacja */
 ul {
     list-style-type: none;
     padding: 0;
 }
 
-.searchInput {
-    padding: 8px;
-    width: 60%;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.searchButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px;
-}
-
-    .searchButton:hover {
-        background-color: #0056b3;
-    }
-
-/* Komunikat błędu */
-.alert-danger {
-    background-color: #ffcccc;
-    color: #a94442;
+/* Przywrócenie listy użytkowników, których użytkownik śledzi */
+.followedUsersList {
+    margin-top: 20px;
     padding: 10px;
-    border-radius: 5px;
-    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-/* Ramka na posty na całą szerokość */
+/* Ramka na posty - pełna szerokość strony */
 .broadcast {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #ddd;
-    padding: 15px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-/* Zdjęcie posta w ramce */
+/* Zdjęcie posta - dopasowane do ramki */
 .broadcastImageFrame {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 5px;
     max-width: 100%;
+    display: block;
+    margin: auto;
+}
+
+/* Dodanie odstępu od góry dla wyszukanego użytkownika */
+.searchUserItem {
+    padding-top: 15px;
 }

@@ -1,4 +1,6 @@
-﻿namespace BroadcastSocialMedia.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BroadcastSocialMedia.Models
 {
     public class UserThatLikeBroadcast
     {

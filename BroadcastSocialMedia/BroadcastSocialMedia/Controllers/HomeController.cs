@@ -1,12 +1,14 @@
 using BroadcastSocialMedia.Data;
 using BroadcastSocialMedia.Models;
 using BroadcastSocialMedia.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BroadcastSocialMedia.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -94,16 +96,19 @@ namespace BroadcastSocialMedia.Controllers
                 return RedirectToAction("Index");
             }
 
+            var userName = user.Name ?? "Unknown User";
+
             broadcast.UserThatLikeBroadcasts.Add(new UserThatLikeBroadcast
             {
                 UserId = user.Id,
-                NameOfUserThatLike = user.Name,
+                NameOfUserThatLike = userName,
                 BroadcastId = broadcast.Id
             });
 
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
 
         private string SaveImageFile(IFormFile imageFile)
         {

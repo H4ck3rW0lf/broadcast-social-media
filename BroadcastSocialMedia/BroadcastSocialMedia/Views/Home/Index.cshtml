@@ -12,10 +12,8 @@
 
     <form method="post" action="/Home/Broadcast" enctype="multipart/form-data">
         <textarea class="textAreaFullWidth" name="Message" rows="3" placeholder="Write your message here..."></textarea>
-
         <input type="file" name="ImageFile">
-
-        <input class="saveButton" type="submit" value="Save">
+        <input class="saveButton" type="submit" value="Save" style="float: right">
     </form>
 
     <hr class="separator-double">
@@ -29,11 +27,12 @@
                 <img class="profileImageMedium" src="~/images/profilePictures/@broadcast.User.ProfileImageFilename" alt="Profile Image">
                 <span class="userName">@broadcast.User.Name</span>
             </div>
+
             <p class="postContent">@broadcast.Message</p>
 
             @if (!string.IsNullOrEmpty(broadcast.ImageFilename))
             {
-                <img class="broadcastImageFull" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">
+                <img class="broadcastImageFrame" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">
             }
 
             <form method="post" action="/Home/LikeBroadcast">

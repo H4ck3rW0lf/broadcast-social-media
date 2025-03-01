@@ -1,12 +1,14 @@
 ﻿using BroadcastSocialMedia.Data;
 using BroadcastSocialMedia.Models;
 using BroadcastSocialMedia.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BroadcastSocialMedia.Controllers
 {
+    [Authorize]
     public class RecommendedUsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -3,7 +3,7 @@
 <div class="viewsContainer">
     <div class="profileHeader">
         <img class="profileImageLarge" src="~/images/profilePictures/@Model.ImageFilename" onclick="enlargeImage(this)" alt="Profile Image">
-        <h2>@Model.Name</h2>
+        <h2 class="userName">@Model.Name</h2>
     </div>
 
     <div class="updateSection">
@@ -15,11 +15,9 @@
             </div>
         }
         <form method="post" action="/Profile/Update" enctype="multipart/form-data">
-            <input name="Name" placeholder="Enter new name">
-
+            <input class="nameInput" name="Name" placeholder="Enter new name">
             <input type="file" name="ProfileImageFile">
-
-            <input class="saveButton" type="submit" value="Save">
+            <input class="saveButton" type="submit" value="Save" style="float: right">
         </form>
     </div>
 </div>
