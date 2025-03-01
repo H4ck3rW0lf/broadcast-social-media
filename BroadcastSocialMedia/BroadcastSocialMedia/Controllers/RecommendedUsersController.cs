@@ -18,43 +18,53 @@ namespace BroadcastSocialMedia.Controllers
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> Index() // Uppgift 7
+        public async Task<IActionResult> Index()
         {
-            var allUsers = await _dbContext.Users.ToListAsync();
-            var user = await _userManager.GetUserAsync(User);
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            if (loggedInUser == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            var usersListenedTo = await _dbContext.Users
-                .Where(u => u.Id == user.Id)
-                .SelectMany(u => u.ListeningTo)
+            // Załaduj listę obserwowanych użytkowników
+            await _dbContext.Entry(loggedInUser).Collection(u => u.ListeningTo).LoadAsync();
+            var followedUsers = loggedInUser.ListeningTo.ToList();
+
+            // Pobierz wszystkich użytkowników oprócz siebie oraz tych, których już śledzisz
+            var recommendedUsers = await _dbContext.Users
+                .Where(u => u.Id != loggedInUser.Id && !followedUsers.Contains(u))
                 .ToListAsync();
 
-            usersListenedTo.Add(user);
-
-            var userNotListenedTo = allUsers.Except(usersListenedTo).ToList();
-            userNotListenedTo = ShuffleList(userNotListenedTo);
-
-            var viewModel = new RecommendedUsersIndexViewModel()
+            var viewModel = new RecommendedUsersIndexViewModel
             {
-                RecommendedUsers = userNotListenedTo
+                RecommendedUsers = recommendedUsers
             };
 
             return View(viewModel);
         }
 
-        private List<T> ShuffleList<T>(List<T> list) // Uppgift 5
+        [HttpPost]
+        public async Task<IActionResult> ListenToUser(UsersListenToUserViewModel viewModel)
         {
-            Random random = new Random();
-            int n = list.Count;
-
-            for (int i = n - 1; i > 0; i--)
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            if (loggedInUser == null)
             {
-                int k = random.Next(i + 1);
-                T value = list[k];
-                list[k] = list[i];
-                list[i] = value;
+                return RedirectToAction("Index");
             }
 
-            return list;
+            var userToFollow = await _dbContext.Users.FindAsync(viewModel.UserId);
+            if (userToFollow != null && userToFollow.Id != loggedInUser.Id)
+            {
+                if (!loggedInUser.ListeningTo.Contains(userToFollow))
+                {
+                    loggedInUser.ListeningTo.Add(userToFollow);
+                    await _userManager.UpdateAsync(loggedInUser);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+
+            return RedirectToAction("Index", "RecommendedUsers");
         }
     }
 }
+

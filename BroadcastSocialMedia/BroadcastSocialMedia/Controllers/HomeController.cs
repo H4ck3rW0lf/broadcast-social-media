@@ -4,7 +4,6 @@ using BroadcastSocialMedia.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace BroadcastSocialMedia.Controllers
 {
@@ -28,59 +27,16 @@ namespace BroadcastSocialMedia.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return View("Index", new HomeIndexViewModel
-                {
-                    Broadcasts = new List<Broadcast>(),
-                    ErrorMessage = "You are not logged in."
-                });
-            }
+            var broadcasts = await _dbContext.Broadcasts
+                .Include(b => b.User)
+                .Include(b => b.UserThatLikeBroadcasts)
+                .OrderByDescending(b => b.Published)
+                .ToListAsync();
 
-            // Ladda in ListeningTo-samlingen
-            await _dbContext.Entry(user).Collection(u => u.ListeningTo).LoadAsync();
-
-            // Samla in broadcasts manuellt från varje följd användare
-            List<Broadcast> broadcasts = new List<Broadcast>();
-            if (user.ListeningTo != null)
-            {
-                foreach (var followedUser in user.ListeningTo)
-                {
-                    await _dbContext.Entry(followedUser).Collection(u => u.Broadcasts).LoadAsync();
-                    if (followedUser.Broadcasts != null)
-                    {
-                        foreach (var broadcast in followedUser.Broadcasts)
-                        {
-                            broadcasts.Add(broadcast);
-                        }
-                    }
-                }
-            }
-
-            // Sortera manuellt (nyaste först)
-            broadcasts.Sort((a, b) => b.Published.CompareTo(a.Published));
-
-            HomeIndexViewModel viewModel = new HomeIndexViewModel
+            return View(new HomeIndexViewModel
             {
                 Broadcasts = broadcasts,
-                ErrorMessage = null
-            };
-
-            return View(viewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel
-            {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                ErrorMessage = TempData["ErrorMessage"] as string // Error message wy?wietla si? tylko na g?ównej
             });
         }
 
@@ -90,40 +46,14 @@ namespace BroadcastSocialMedia.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return View("Index", new HomeIndexViewModel
-                {
-                    Broadcasts = new List<Broadcast>(),
-                    ErrorMessage = "You are not logged in."
-                });
+                TempData["ErrorMessage"] = "You must be logged in to post.";
+                return RedirectToAction("Index");
             }
 
             if (string.IsNullOrEmpty(viewModel.Message))
             {
-                await _dbContext.Entry(user).Collection(u => u.ListeningTo).LoadAsync();
-                List<Broadcast> broadcasts = new List<Broadcast>();
-                if (user.ListeningTo != null)
-                {
-                    foreach (var followedUser in user.ListeningTo)
-                    {
-                        await _dbContext.Entry(followedUser).Collection(u => u.Broadcasts).LoadAsync();
-                        if (followedUser.Broadcasts != null)
-                        {
-                            foreach (var broadcast in followedUser.Broadcasts)
-                            {
-                                broadcasts.Add(broadcast);
-                            }
-                        }
-                    }
-                }
-                broadcasts.Sort((a, b) => b.Published.CompareTo(a.Published));
-
-                HomeIndexViewModel indexViewModel = new HomeIndexViewModel
-                {
-                    Broadcasts = broadcasts,
-                    ErrorMessage = "Please fill in a message before posting."
-                };
-
-                return View("Index", indexViewModel);
+                TempData["ErrorMessage"] = "Please enter a message before posting.";
+                return RedirectToAction("Index");
             }
 
             string fileName = "";
@@ -132,7 +62,7 @@ namespace BroadcastSocialMedia.Controllers
                 fileName = SaveImageFile(viewModel.ImageFile);
             }
 
-            Broadcast newBroadcast = new Broadcast
+            var newBroadcast = new Broadcast
             {
                 Message = viewModel.Message,
                 User = user,
@@ -152,54 +82,33 @@ namespace BroadcastSocialMedia.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return View("Index", new HomeIndexViewModel
-                {
-                    Broadcasts = new List<Broadcast>(),
-                    ErrorMessage = "You are not logged in."
-                });
+                return RedirectToAction("Index");
             }
 
-            var broadcast = await _dbContext.Broadcasts.FindAsync(viewModel.BroadcastId);
-            if (broadcast == null)
+            var broadcast = await _dbContext.Broadcasts
+                .Include(b => b.UserThatLikeBroadcasts)
+                .FirstOrDefaultAsync(b => b.Id == viewModel.BroadcastId);
+
+            if (broadcast == null || broadcast.UserThatLikeBroadcasts.Any(l => l.UserId == user.Id))
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
 
-            if (broadcast.UserThatLikeBroadcasts == null)
+            broadcast.UserThatLikeBroadcasts.Add(new UserThatLikeBroadcast
             {
-                broadcast.UserThatLikeBroadcasts = new List<UserThatLikeBroadcast>();
-            }
+                UserId = user.Id,
+                NameOfUserThatLike = user.Name,
+                BroadcastId = broadcast.Id
+            });
 
-            bool alreadyLiked = false;
-            foreach (var like in broadcast.UserThatLikeBroadcasts)
-            {
-                if (like.UserId == user.Id)
-                {
-                    alreadyLiked = true;
-                    break;
-                }
-            }
-
-            if (!alreadyLiked)
-            {
-                UserThatLikeBroadcast newLike = new UserThatLikeBroadcast
-                {
-                    UserId = user.Id,
-                    NameOfUserThatLike = user.Name,
-                    BroadcastId = broadcast.Id
-                };
-
-                broadcast.UserThatLikeBroadcasts.Add(newLike);
-                await _dbContext.SaveChangesAsync();
-            }
-
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private string SaveImageFile(IFormFile imageFile)
         {
             string projectDirectory = Directory.GetCurrentDirectory();
-            string relativePath = "wwwroot\\images\\broadcastImages";
+            string relativePath = "wwwroot/images/broadcastImages";
             string fullPath = Path.Combine(projectDirectory, relativePath);
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
             string fullPathAndImageFileName = Path.Combine(fullPath, fileName);
@@ -213,3 +122,4 @@ namespace BroadcastSocialMedia.Controllers
         }
     }
 }
+

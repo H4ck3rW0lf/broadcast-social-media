@@ -21,40 +21,37 @@ namespace BroadcastSocialMedia.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            var viewModel = new ProfileIndexViewModel()
+            await _dbContext.Entry(user).Collection(u => u.ListeningTo).LoadAsync();
+
+            return View(new ProfileIndexViewModel
             {
                 Name = user.Name ?? "",
-                ImageFilename = user.ProfileImageFilename
-            };
-
-            return View(viewModel);
+                ImageFilename = user.ProfileImageFilename,
+                FollowingUsers = user.ListeningTo.ToList()
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(ProfileIndexViewModel viewModel)
         {
             var user = await _userManager.GetUserAsync(User);
-            var userNameTaken = false;
-
-            if (viewModel.Name != user.Name) // Uppgift 3
+            if (user == null)
             {
-                userNameTaken = _dbContext.Users.Any(u => u.Name == viewModel.Name);
+                return RedirectToAction("Index");
             }
 
+            var userNameTaken = await _dbContext.Users.AnyAsync(u => u.Name == viewModel.Name && u.Id != user.Id);
             if (userNameTaken)
             {
-                var profileImageViewModel = new ProfileIndexViewModel()
-                {
-                    Name = viewModel.Name ?? "",
-                    ImageFilename = user.ProfileImageFilename,
-                    ErrorMessage = "This name is already in use! Choose a different username."
-                };
-
-                return View(profileImageViewModel);
+                TempData["Message"] = "This name is already in use. Choose a different username.";
+                return RedirectToAction("Index");
             }
 
-            // Om en ny profilbild har laddats upp
             if (viewModel.ProfileImageFile != null)
             {
                 var fileName = SaveImageFile(viewModel.ProfileImageFile);
@@ -62,15 +59,13 @@ namespace BroadcastSocialMedia.Controllers
             }
 
             user.Name = viewModel.Name;
-
             await _userManager.UpdateAsync(user);
 
-            TempData["Message"] = "Your name is saved!";
-
-            return Redirect("/");
+            TempData["Message"] = "Your profile has been updated!";
+            return RedirectToAction("Index");
         }
 
-        private string SaveImageFile(IFormFile imageFile) // Uppgift 2
+        private string SaveImageFile(IFormFile imageFile)
         {
             string projectDirectory = Directory.GetCurrentDirectory();
             string relativePath = "wwwroot/images/profilePictures";

@@ -1,29 +1,25 @@
 ﻿@model ProfileIndexViewModel
 
 <div class="viewsContainer">
-    <h1>Update profile</h1>
+    <div class="profileHeader">
+        <img class="profileImageLarge" src="~/images/profilePictures/@Model.ImageFilename" onclick="enlargeImage(this)" alt="Profile Image">
+        <h2>@Model.Name</h2>
+    </div>
 
-    <form method="post" action="/Profile/Update" enctype="multipart/form-data">
-        <input value="@Model.Name" name="Name" placeholder="Name" />
-        <input type="file" name="ProfileImageFile">
-        <input type="submit" value="Save">
-    </form>
+    <div class="updateSection">
+        <h3>Update your name</h3>
+        @if (!string.IsNullOrEmpty(TempData["Message"]?.ToString()))
+        {
+            <div class="alert alert-danger">
+                @TempData["Message"]
+            </div>
+        }
+        <form method="post" action="/Profile/Update" enctype="multipart/form-data">
+            <input name="Name" placeholder="Enter new name">
 
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <p style="color: red">@Model.ErrorMessage</p>
-    }
+            <input type="file" name="ProfileImageFile">
 
-    @if (!string.IsNullOrEmpty(Model.ImageFilename))
-    {
-        <img src="~/images/profilePictures/@Model.ImageFilename" alt="Profile Image">
-    }
-
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Message"]
-        </div>
-    }
-
+            <input class="saveButton" type="submit" value="Save">
+        </form>
+    </div>
 </div>

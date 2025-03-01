@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BroadcastSocialMedia.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BroadcastSocialMedia.ViewModels
 {
@@ -8,5 +9,6 @@ namespace BroadcastSocialMedia.ViewModels
         public string ImageFilename { get; set; }
         public IFormFile ProfileImageFile { get; set; }
         public string ErrorMessage { get; set; }
+        public List<ApplicationUser> FollowingUsers { get; set; } = new List<ApplicationUser>();
     }
 }

@@ -1,35 +1,59 @@
-﻿@model BroadcastSocialMedia.ViewModels.UsersIndexViewModel
+﻿@model UsersIndexViewModel
 
 <div class="viewsContainer">
-    <h1>Search for users</h1>
+    <h2>Search Users</h2>
 
-    <form action="/Users" method="get">
-        <input type="text" name="Search" placeholder="Search" value="@Model.Search" />
-        <input type="submit" value="Search" />
+    <form method="get">
+        <input class="searchInput" type="text" name="Search" placeholder="Enter username...">
+        <input class="searchButton" type="submit" value="Search">
     </form>
 
-    <hr />
-
-    <h2>Results</h2>
-
-    @foreach (var user in Model.Result)
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-        <div class="user">
-            <p>@user.Name</p>
-            @if (Model.FollowingId.Contains(user.Id))
-            {
-                <form method="post" action="/Users/StopListen">
-                    <input type="hidden" name="UserId" value="@user.Id" />
-                    <input type="submit" value="Unfollow" />
-                </form>
-            }
-            else
-            {
-                <form method="post" action="/Users/Listen">
-                    <input type="hidden" name="UserId" value="@user.Id" />
-                    <input type="submit" value="Follow" />
-                </form>
-            }
+        <div class="alert alert-danger">
+            @Model.ErrorMessage
         </div>
+    }
+
+    @if (Model.Result.Any())
+    {
+        <ul>
+            @foreach (var user in Model.Result)
+            {
+                <li class="profileContainer">
+                    <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
+                    <b>@user.Name</b>
+                    <form method="post" action="/Users/ListenToUser">
+                        <input type="hidden" name="UserId" value="@user.Id">
+                        <button class="followButton" type="submit">Follow</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+
+    <hr class="separator-double">
+
+    <h2>Followed Users</h2>
+
+    @if (Model.FollowingUsers.Any())
+    {
+        <ul>
+            @foreach (var user in Model.FollowingUsers)
+            {
+                <li class="profileContainer">
+                    <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
+                    <b>@user.Name</b>
+                    <form method="post" action="/Users/StopListenToUser">
+                        <input type="hidden" name="UserId" value="@user.Id">
+                        <button class="unfollowButton" type="submit">Unfollow</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>You are not following anyone.</p>
     }
 </div>

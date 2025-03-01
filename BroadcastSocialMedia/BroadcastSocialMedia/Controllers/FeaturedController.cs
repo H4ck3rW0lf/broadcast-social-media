@@ -18,11 +18,9 @@ namespace BroadcastSocialMedia.Controllers
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> Index() // Uppgift 6
+        public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-
-            var broadcasts = await _dbContext.Broadcasts // Hämtar alla broadcasts och sorterar dem på flest likes
+            var broadcasts = await _dbContext.Broadcasts
                 .Include(b => b.User)
                 .Include(b => b.UserThatLikeBroadcasts)
                 .OrderByDescending(b => b.UserThatLikeBroadcasts.Count)

@@ -1,23 +1,26 @@
 ﻿@model RecommendedUsersIndexViewModel
 
-@{
-    ViewData["Title"] = "Recommended Users";
-}
-
 <div class="viewsContainer">
-    @if (Model != null)
-    {
-        <h2>Users recommended for you to follow.</h2>
-        @for (int i = 0; i < 3 && i < Model.RecommendedUsers.Count; i++)
-        {
-            <p>
-                <b>@Model.RecommendedUsers[i].Name</b>
-            </p>
+    <h2>Recommended Users</h2>
 
-            @if (!string.IsNullOrEmpty(Model.RecommendedUsers[i].ProfileImageFilename))
+    @if (Model.RecommendedUsers.Any())
+    {
+        <ul>
+            @foreach (var user in Model.RecommendedUsers)
             {
-                <img src="~/images/profilePictures/@Model.RecommendedUsers[i].ProfileImageFilename" alt="Profile Image">
+                <li class="profileContainer">
+                    <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
+                    <b>@user.Name</b>
+                    <form method="post" action="/Users/ListenToUser">
+                        <input type="hidden" name="UserId" value="@user.Id">
+                        <button class="followButton" type="submit">Follow</button>
+                    </form>
+                </li>
             }
-        }
+        </ul>
+    }
+    else
+    {
+        <p>There are no recommended users at the moment.</p>
     }
 </div>
