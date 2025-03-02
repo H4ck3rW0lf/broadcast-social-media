@@ -47,6 +47,7 @@ namespace BroadcastSocialMedia.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Uppgift 3 - Unika användernamn //
             var userNameTaken = await _dbContext.Users.AnyAsync(u => u.Name == viewModel.Name && u.Id != user.Id);
             if (userNameTaken)
             {
@@ -54,6 +55,7 @@ namespace BroadcastSocialMedia.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Uppgift 2 - Ladda upp eller updatera profilbild //
             if (viewModel.ProfileImageFile != null)
             {
                 var fileName = SaveImageFile(viewModel.ProfileImageFile);
@@ -67,6 +69,7 @@ namespace BroadcastSocialMedia.Controllers
             return RedirectToAction("Index");
         }
 
+        // Uppgift 2 - Ladda upp profilbilder och spara dem på servern // 
         private string SaveImageFile(IFormFile imageFile)
         {
             string projectDirectory = Directory.GetCurrentDirectory();

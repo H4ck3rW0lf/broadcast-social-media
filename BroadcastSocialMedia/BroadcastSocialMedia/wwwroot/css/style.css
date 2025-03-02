@@ -1,4 +1,5 @@
-﻿/* Ogólne ustawienia strony */
+﻿/* Uppgit 4 - Unik styling */
+/* Grundläggande inställningar för sidan */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
@@ -6,7 +7,7 @@ body {
     padding: 0;
 }
 
-/* Kontenery */
+/* Behållare för olika sektioner */
 .viewsContainer, .createPostContainer, .searchResultContainer, .followedUsersList {
     margin-top: 20px;
     padding: 10px;
@@ -15,7 +16,7 @@ body {
     border: 1px solid #ddd;
 }
 
-/* Nagłówki sekcji */
+/* Huvudrubriker och användarlådor */
 .profileHeader, .searchUserItem, .userProfileBox, .userItem {
     display: flex;
     align-items: center;
@@ -27,7 +28,7 @@ body {
     border: 1px solid #ccc;
 }
 
-    /* Zdjęcia profilowe */
+    /* Profilbilder */
     .profileImageMedium, .searchUserItem img, .userItem img {
         width: 70px;
         height: 70px;
@@ -41,15 +42,15 @@ body {
     cursor: pointer;
 }
 
-/* Czcionki */
-.userName, .searchUserItem .userName, .userItem .userName {
+/* Typsnitt och formatering för användarnamn */
+.userName {
     font-size: 18px;
     font-weight: bold;
     margin-left: 10px;
     margin-right: auto;
 }
 
-/* Przyciski */
+/* Knappar (Spara, Gilla, Följ, Avfölj) */
 button, .saveButton, .likeButton, .followButton, .unfollowButton {
     padding: 6px 12px;
     cursor: pointer;
@@ -82,7 +83,7 @@ button, .saveButton, .likeButton, .followButton, .unfollowButton {
         background-color: #c82333;
     }
 
-/* Pola tekstowe */
+/* Textfält för att skriva inlägg och redigera användarnamn */
 .textAreaFullWidth, .nameInput {
     width: 100%;
     padding: 10px;
@@ -92,27 +93,18 @@ button, .saveButton, .likeButton, .followButton, .unfollowButton {
     margin-bottom: 15px;
 }
 
-/* Przycisk Save - zielony */
-.saveButton {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 5px;
+/* Extra utrymme ovanför "Change Profile Picture" */
+.profilePictureLabel {
+    padding-top: 10px;
 }
 
-    .saveButton:hover {
-        background-color: #218838;
-    }
-
-/* Lista użytkowników - stylizacja */
+/* Ta bort standardpunkter från listor */
 ul {
     list-style-type: none;
     padding: 0;
 }
 
-/* Przywrócenie listy użytkowników, których użytkownik śledzi */
+/* Lista över följda användare */
 .followedUsersList {
     margin-top: 20px;
     padding: 10px;
@@ -121,7 +113,7 @@ ul {
     border: 1px solid #ddd;
 }
 
-/* 🟢 PROFIL UŻYTKOWNIKA - SPÓJNY STYL */
+/* Användarprofil – enhetlig design */
 .profileContainer {
     display: flex;
     align-items: center;
@@ -133,13 +125,7 @@ ul {
     margin-bottom: 20px;
 }
 
-/* 🟢 PRZYCISK "SAVE" WYRÓWNANY DO PRAWEJ */
-.saveButton {
-    float: right;
-    margin-top: 10px;
-}
-
-/* 🟢 PRZYCISK "VIEW FOLLOWING LIST" */
+/* Knapp för att visa följda användare */
 .viewFollowingButton {
     display: inline-block;
     background-color: #007bff;
@@ -156,7 +142,7 @@ ul {
         background-color: #0056b3;
     }
 
-/* 🟢 LISTA OBSERWOWANYCH UŻYTKOWNIKÓW */
+/* Lista över följda användare */
 .userItem {
     display: flex;
     align-items: center;
@@ -168,12 +154,12 @@ ul {
     margin-bottom: 10px;
 }
 
-/* 🟢 PRZYCISK "UNFOLLOW" */
+/* 🟢 Knapp för att avfölja */
 .unfollowButton {
     margin-left: auto;
 }
 
-/* Ramka na posty - pełna szerokość strony */
+/* Behållare för inlägg - full bredd */
 .broadcast {
     display: flex;
     flex-direction: column;
@@ -187,7 +173,7 @@ ul {
     box-sizing: border-box;
 }
 
-/* Zdjęcie posta - dopasowane do ramki */
+/* Anpassning av bilder i inlägg */
 .broadcastImageFrame {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -197,7 +183,10 @@ ul {
     margin: auto;
 }
 
-/* Dodanie odstępu od góry dla wyszukanego użytkownika */
-.searchUserItem {
-    padding-top: 15px;
+/* Säkerställer att alla separatorer har samma tjocklek och stil */
+hr.separator-double {
+    border: none;
+    border-top: 4px double #ccc;
+    margin: 20px 0;
+    width: 100%;
 }

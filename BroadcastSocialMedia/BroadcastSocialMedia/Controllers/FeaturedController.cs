@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BroadcastSocialMedia.Controllers
 {
+    // Uppgift 6 - Featured - sida //
     [Authorize]
     public class FeaturedController : Controller
     {

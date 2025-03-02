@@ -111,7 +111,8 @@ namespace BroadcastSocialMedia.Controllers
 
             return RedirectToAction("Index");
         }
-
+        
+        // Uppgift 1 - Avfölj användare //
         [HttpPost]
         public async Task<IActionResult> StopListenToUser(UsersListenToUserViewModel viewModel)
         {
@@ -134,7 +135,7 @@ namespace BroadcastSocialMedia.Controllers
                 }
             }
 
-            return RedirectToAction("Following"); // 🔥 Powrót do listy obserwowanych użytkowników
+            return RedirectToAction("Following");
         }
     }
 }

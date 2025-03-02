@@ -1,4 +1,5 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿/* Uppgit 4 och 2 - Unik styling och Ladda upp bilder */
+document.addEventListener("DOMContentLoaded", function () {
     let images = document.querySelectorAll(".profileImageMedium, .profileImageLarge, .broadcastImageMedium");
 
     images.forEach(img => {

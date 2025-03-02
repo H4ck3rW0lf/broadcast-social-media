@@ -3,6 +3,7 @@
 <div class="viewsContainer">
     <h2>Update Profile</h2>
 
+    @*Uppgift 8 - Visa felmeddelande*@
     @if (!string.IsNullOrEmpty(TempData["Message"]?.ToString()))
     {
         <div class="alert alert-success">
@@ -17,17 +18,18 @@
         </div>
     }
 
-    <form method="post" action="/Profile/Update" enctype="multipart/form-data">
+    <form method="post" action="/Profile/Update" enctype="multipart/form-data">  @*enctype gör att formuläret kan hantera filuppladdningar*@
         <label for="Name">New Username</label>
-        <input type="text" class="textAreaFullWidth" name="Name" value="@Model.Name" required>
-
         <div style="padding-top: 10px;">
-            <!-- 🟢 DODANO ODSTĘP NAD TEKSTEM -->
-            <label for="ProfileImageFile">Change Profile Picture</label>
-            <input type="file" name="ProfileImageFile">
+            <input type="text" class="textAreaFullWidth" name="Name" value="@Model.Name" required>
         </div>
 
-        <input class="saveButton" type="submit" value="Save" style="float: right;">
+        @*Uppgift 2 - Ladda upp profilbild*@
+        <div style="padding-top: 10px;">
+            <label for="ProfileImageFile">Change Profile Picture</label>
+            <input type="file" name="ProfileImageFile">
+            <input class="saveButton" type="submit" value="Save" style="float: right">
+        </div>
     </form>
 
     <hr class="separator-double">
@@ -44,6 +46,7 @@
                     <a asp-controller="Users" asp-action="ShowUser" asp-route-id="@user.Id" class="userName">
                         @user.Name
                     </a>
+
 
                     <form method="post" action="/Users/StopListenToUser">
                         <input type="hidden" name="UserId" value="@user.Id">

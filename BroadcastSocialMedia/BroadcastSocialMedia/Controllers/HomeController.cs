@@ -50,6 +50,7 @@ namespace BroadcastSocialMedia.Controllers
         [HttpPost]
         public async Task<IActionResult> Broadcast(HomeBroadcastViewModel viewModel)
         {
+            // Uppgift 8 - Visa felmeddeland //
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -83,6 +84,7 @@ namespace BroadcastSocialMedia.Controllers
             return RedirectToAction("Index");
         }
 
+        // Uppgift 5 - Gilla markeringar utan dubbletter 
         [HttpPost]
         public async Task<IActionResult> LikeBroadcast(HomeLikeBroadcastViewModel viewModel)
         {
@@ -93,7 +95,7 @@ namespace BroadcastSocialMedia.Controllers
             }
 
             var broadcast = await _dbContext.Broadcasts
-                .Include(b => b.UserThatLikeBroadcasts)
+                .Include(b => b.UserThatLikeBroadcasts)         // Laddar list av användare som gillar inlägg //
                 .FirstOrDefaultAsync(b => b.Id == viewModel.BroadcastId);
 
             if (broadcast == null || broadcast.UserThatLikeBroadcasts.Any(l => l.UserId == user.Id))
@@ -114,6 +116,7 @@ namespace BroadcastSocialMedia.Controllers
             return RedirectToAction("Index");
         }
 
+        // Uppgift 2 - Ladda upp bild till inlägg //
         private string SaveImageFile(IFormFile imageFile)
         {
             string projectDirectory = Directory.GetCurrentDirectory();

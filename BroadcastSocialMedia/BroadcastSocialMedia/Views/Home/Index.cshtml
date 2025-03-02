@@ -3,6 +3,7 @@
 <div class="viewsContainer">
     <h2>Create new Broadcast</h2>
 
+    @* Uppgift 8 - Visa felmeddelande *@
     @if (!string.IsNullOrEmpty(TempData["ErrorMessage"]?.ToString()))
     {
         <div class="alert alert-danger">
@@ -30,6 +31,7 @@
 
             <p class="postContent">@broadcast.Message</p>
 
+            @* Uppgift 2 - Ladda upp bild till inlägg *@
             @if (!string.IsNullOrEmpty(broadcast.ImageFilename))
             {
                 <img class="broadcastImageFrame" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">

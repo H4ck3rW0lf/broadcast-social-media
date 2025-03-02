@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace BroadcastSocialMedia.Controllers
 {
     [Authorize]
+
+    // Uppfift 7 - Rekommendera användare //
     public class RecommendedUsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -28,11 +30,11 @@ namespace BroadcastSocialMedia.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Załaduj listę obserwowanych użytkowników
+            // Ladda upp list av följda användare //
             await _dbContext.Entry(loggedInUser).Collection(u => u.ListeningTo).LoadAsync();
             var followedUsers = loggedInUser.ListeningTo.ToList();
 
-            // Pobierz wszystkich użytkowników oprócz siebie oraz tych, których już śledzisz
+            // Ladda upp alla användare förutom logged In och redan följd användare //
             var recommendedUsers = await _dbContext.Users
                 .Where(u => u.Id != loggedInUser.Id && !followedUsers.Contains(u))
                 .ToListAsync();
