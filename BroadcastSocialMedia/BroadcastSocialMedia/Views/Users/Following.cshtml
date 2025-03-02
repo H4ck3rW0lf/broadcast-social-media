@@ -1,35 +1,31 @@
-﻿@model BroadcastSocialMedia.ViewModels.UsersIndexViewModel
+﻿@model List<ApplicationUser>
 
 <div class="viewsContainer">
-    <h1>Search for users</h1>
+    <h2>Users You Follow</h2>
 
-    <form action="/Users" method="get">
-        <input type="text" name="Search" placeholder="Search" value="@Model.Search" />
-        <input type="submit" value="Search" />
-    </form>
-
-    <hr />
-
-    <h2>Results</h2>
-
-    @foreach (var user in Model.Result)
+    @if (Model.Any())
     {
-        <div class="user">
-            <p>@user.Name</p>
-            @if (Model.FollowingId.Contains(user.Id))
+        <ul class="followedUsersList">
+            @foreach (var user in Model)
             {
-                <form method="post" action="/Users/StopListen">
-                    <input type="hidden" name="UserId" value="@user.Id" />
-                    <input type="submit" value="Unfollow" />
-                </form>
+                <li class="userItem">
+                    <img class="profileImageMedium" src="~/images/profilePictures/@user.ProfileImageFilename" alt="Profile Image">
+
+                    <!-- 🔥 Klikalny link do profilu użytkownika -->
+                    <a asp-controller="Users" asp-action="ShowUser" asp-route-id="@user.Id" class="userName">
+                        @user.Name
+                    </a>
+
+                    <form method="post" action="/Users/StopListenToUser">
+                        <input type="hidden" name="UserId" value="@user.Id">
+                        <button class="unfollowButton" type="submit">Unfollow</button>
+                    </form>
+                </li>
             }
-            else
-            {
-                <form method="post" action="/Users/Listen">
-                    <input type="hidden" name="UserId" value="@user.Id" />
-                    <input type="submit" value="Follow" />
-                </form>
-            }
-        </div>
+        </ul>
+    }
+    else
+    {
+        <p>You are not following anyone.</p>
     }
 </div>

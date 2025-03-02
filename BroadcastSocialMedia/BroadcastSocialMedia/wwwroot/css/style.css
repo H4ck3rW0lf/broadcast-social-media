@@ -102,9 +102,9 @@ button, .saveButton, .likeButton, .followButton, .unfollowButton {
     border-radius: 5px;
 }
 
-.saveButton:hover {
+    .saveButton:hover {
         background-color: #218838;
-}
+    }
 
 /* Lista użytkowników - stylizacja */
 ul {
@@ -119,6 +119,58 @@ ul {
     background: #f8f9fa;
     border-radius: 8px;
     border: 1px solid #ddd;
+}
+
+/* 🟢 PROFIL UŻYTKOWNIKA - SPÓJNY STYL */
+.profileContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+/* 🟢 PRZYCISK "SAVE" WYRÓWNANY DO PRAWEJ */
+.saveButton {
+    float: right;
+    margin-top: 10px;
+}
+
+/* 🟢 PRZYCISK "VIEW FOLLOWING LIST" */
+.viewFollowingButton {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+    .viewFollowingButton:hover {
+        background-color: #0056b3;
+    }
+
+/* 🟢 LISTA OBSERWOWANYCH UŻYTKOWNIKÓW */
+.userItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+/* 🟢 PRZYCISK "UNFOLLOW" */
+.unfollowButton {
+    margin-left: auto;
 }
 
 /* Ramka na posty - pełna szerokość strony */

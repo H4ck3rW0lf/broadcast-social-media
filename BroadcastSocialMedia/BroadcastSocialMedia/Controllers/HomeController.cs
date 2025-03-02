@@ -38,8 +38,13 @@ namespace BroadcastSocialMedia.Controllers
             return View(new HomeIndexViewModel
             {
                 Broadcasts = broadcasts,
-                ErrorMessage = TempData["ErrorMessage"] as string // Error message wy?wietla si? tylko na g?ównej
+                ErrorMessage = TempData["ErrorMessage"] as string
             });
+        }
+
+        public async Task<IActionResult> Privacy()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -109,7 +114,6 @@ namespace BroadcastSocialMedia.Controllers
             return RedirectToAction("Index");
         }
 
-
         private string SaveImageFile(IFormFile imageFile)
         {
             string projectDirectory = Directory.GetCurrentDirectory();
@@ -127,4 +131,5 @@ namespace BroadcastSocialMedia.Controllers
         }
     }
 }
+
 

@@ -1,30 +1,29 @@
-﻿@using Microsoft.AspNetCore.Identity
-@model UsersShowUserViewModel
-@inject UserManager<ApplicationUser> UserManager
-
-@{
-    var user = await UserManager.GetUserAsync(User);
-    ViewData["Title"] = Model.User.Name;
-}
+﻿@model UsersShowUserViewModel
 
 <div class="viewsContainer">
-    <h1>Broadcasts from @Model.User.Name</h1>
+    <h2>@Model.User.Name's Profile</h2>
 
-    @if (user.Id != Model.User.Id)
+    <div class="userProfileBox">
+        <img class="profileImageMedium" src="~/images/profilePictures/@Model.User.ProfileImageFilename" alt="Profile Image">
+        <b>@Model.User.Name</b>
+    </div>
+
+    <h3>Posts</h3>
+    @if (Model.Broadcasts.Any())
     {
-        <form action="/Users/Listen" method="post">
-            <input type="hidden" name="UserId" value="@Model.User.Id" />
-            <input class="followButton" type="submit" value="Listen to" />
-        </form>
+        @foreach (var broadcast in Model.Broadcasts)
+        {
+            <div class="broadcast">
+                <p>@broadcast.Message</p>
+                @if (!string.IsNullOrEmpty(broadcast.ImageFilename))
+                {
+                    <img class="broadcastImageFrame" src="~/images/broadcastImages/@broadcast.ImageFilename" alt="Broadcast Image">
+                }
+            </div>
+        }
     }
-
-    @foreach (var broadcast in Model.Broadcasts)
+    else
     {
-        <div class="broadcast">
-            <p>
-                <b>@broadcast.Published.ToShortDateString() @broadcast.Published.ToShortTimeString()</b>:
-                @broadcast.Message
-            </p>
-        </div>
+        <p>No posts yet.</p>
     }
 </div>

@@ -53,6 +53,42 @@ namespace BroadcastSocialMedia.Controllers
             return View(viewModel);
         }
 
+        [HttpGet, Route("/Users/Following")]
+        public async Task<IActionResult> Following()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            await _dbContext.Entry(user).Collection(u => u.ListeningTo).LoadAsync();
+            var followedUsers = user.ListeningTo.ToList();
+
+            return View("Following", followedUsers);
+        }
+
+        [HttpGet, Route("/Users/{id}")]
+        public async Task<IActionResult> ShowUser(string id)
+        {
+            var user = await _dbContext.Users
+                .Include(u => u.Broadcasts)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new UsersShowUserViewModel
+            {
+                User = user,
+                Broadcasts = user.Broadcasts.ToList()
+            };
+
+            return View("ShowUser", viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> ListenToUser(UsersListenToUserViewModel viewModel)
         {
@@ -98,7 +134,8 @@ namespace BroadcastSocialMedia.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Following"); // 🔥 Powrót do listy obserwowanych użytkowników
         }
     }
 }
+
