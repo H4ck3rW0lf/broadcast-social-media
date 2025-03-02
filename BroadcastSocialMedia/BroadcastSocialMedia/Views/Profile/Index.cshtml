@@ -18,6 +18,11 @@
         </div>
     }
 
+    <div class="profileHeader">
+        <img class="profileImageLarge" src="~/images/profilePictures/@Model.ImageFilename" alt="Profile Image">
+        <b>@Model.Name</b>
+    </div>
+
     <form method="post" action="/Profile/Update" enctype="multipart/form-data">  @*enctype gör att formuläret kan hantera filuppladdningar*@
         <label for="Name">New Username</label>
         <div style="padding-top: 10px;">
